@@ -1,0 +1,3 @@
+first_triumvirate_modifier = {
+    populist_party_influence = 1
+}

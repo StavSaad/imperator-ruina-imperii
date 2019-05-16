@@ -1,0 +1,26 @@
+yearly_country_pulse = {
+
+    trigger = {
+        tag = ROM
+    }
+
+    events = {
+        ruem_tmv1.0
+        ruem_tmv1.14
+        ruem_tmv1.17
+    }
+
+}
+
+monthly_country_pulse = {
+
+    trigger = {
+        tag = ROM
+        has_global_variable = "caesar_cross_rubicon"
+    }
+
+    events = {
+        ruem_tmv1.18
+    }
+
+}

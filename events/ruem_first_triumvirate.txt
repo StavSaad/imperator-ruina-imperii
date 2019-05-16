@@ -1,0 +1,728 @@
+namespace = "ruem_tmv1"
+# Roman historical flavor events
+# 1-20 The First Triumvirate
+
+# Conditions to set the triumvirate running
+ruem_tmv1.0 = {
+	type = country_event
+	hidden = yes
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = ROM
+		country_culture = roman
+		religion = religion:roman_pantheon
+		is_republic = yes
+		populist_party_support  > 60
+		# Rome completely controls central italy, magna graecia, cisalpine gaul.
+		NOT = {
+			OR = {
+				region:central_italy_region = {
+					any_province = {
+						NOT = {
+							owner = root
+						}
+					}
+				}
+				region:magna_graecia_region = {
+					any_province = {
+						NOT = {
+							owner = root
+						}
+					}
+				}
+				region:cisalpine_gaul_region = {
+					any_province = {
+						NOT = {
+							owner = root
+						}
+					}
+				} 
+			}
+		}
+	}
+
+	immediate = {
+		trigger_event = {
+			id = ruem_tmv1.13
+			days = { 0 90 }
+		}
+		trigger_event = {
+			id = ruem_tmv1.12
+			days = { 2000 2200 }
+		}
+		trigger_event = {
+			id = ruem_tmv1.11
+			days = { 4200 4400 }
+		}
+	}
+
+}
+
+# Birth of Julius Caesar
+ruem_tmv1.11 = {
+	type = country_event
+	hidden = yes
+
+	fire_only_once = yes
+
+	immediate = {
+		add_new_family = Julii
+		add_new_family = Aurelii
+		create_character = {
+			female = yes
+			age = 20
+			family = fam:Aurelii
+			culture = roman
+			religion = religion:roman_pantheon
+			add_nickname = NICKNAME_COTTA
+			save_scope_as = aurelia_cotta
+		}
+		create_character = {
+			first_name = "Gaius"
+			age = 40
+			female = no
+			family = fam:Julii
+			culture = roman
+			religion = roman_pantheon
+			add_nickname = NICKNAME_CAESAR
+			save_scope_as = gaius_julius
+			marry_character = scope:aurelia_cotta
+		}
+		create_character = {
+			# Gaius Julius Caesar
+			first_name = "Gaius"
+			age = 0
+			female = no
+			family = fam:Julii
+			culture = roman
+			religion = roman_pantheon
+			father = scope:gaius_julius
+			mother = scope:aurelia_cotta
+			add_nickname = NICKNAME_CAESAR
+			force_add_trait = proud
+			force_add_trait = ambitious
+			remove_trait = submissive
+			add_martial = 8
+			add_charisma = 6
+			add_finesse = 5
+			save_scope_as = julius_caesar
+			set_variable = {
+				name = "julius_caesar"
+			}
+			set_global_variable = {
+				name = "julius_caesar"
+				value = this
+			}
+		}
+		scope:aurelia_cotta = {
+			adopt = scope:julius_caesar
+		}
+		scope:gaius_julius = {
+			adopt = scope:julius_caesar
+		}
+	}
+}
+
+ruem_tmv1.12 = {
+	type = country_event
+	hidden = yes
+
+	fire_only_once = yes
+
+	immediate = {
+		add_new_family = Pompeii
+		create_character = {
+			first_name = "Gnaeus"
+			age = 20
+			female = no
+			family = fam:Pompeii
+			culture = roman
+			religion = roman_pantheon
+			add_nickname = NICKNAME_STRABO
+			save_scope_as = pompei_strabo
+		}
+		create_character = {
+			# Gnaeus Pompeius Magnus
+			first_name = "Gnaeus"
+			age = 0
+			female = no
+			family = fam:Pompeii
+			father = scope:pompei_strabo
+			culture = roman
+			religion = roman_pantheon
+			add_nickname = NICKNAME_MAGNUS
+			force_add_trait = ambitious
+			remove_trait = submissive
+			add_martial = 8
+			add_charisma = 6
+			add_finesse = 5
+			save_scope_as = pompei_magnus
+			set_variable = {
+				name = "pompei_magnus"
+			}
+			set_global_variable = {
+				name = "pompei_magnus"
+				value = this
+			}
+		}
+		scope:pompei_strabo = {
+			adopt = scope:pompei_magnus
+		}
+	}
+}
+
+# Birth of Licinius Crassus 
+ruem_tmv1.13 = {
+	type = country_event
+	hidden = yes
+
+	fire_only_once = yes
+
+	immediate = {
+		add_new_family = Licinii
+		create_character = {
+			first_name = "Publius"
+			age = 20
+			female = no
+			family = fam:Licinii
+			culture = roman
+			religion = roman_pantheon
+			add_nickname = NICKNAME_CRASSUS
+			save_scope_as = publius_crassus
+		}
+		create_character = {
+			# Marcus Licinius Crassus
+			first_name = "Marcus"
+			age = 0
+			female = no
+			family = fam:Licinii
+			culture = roman
+			religion = roman_pantheon
+			father = scope:publius_crassus
+			add_nickname = NICKNAME_CRASSUS
+			force_add_trait = ambitious
+			remove_trait = submissive
+			add_martial = 6
+			add_charisma = 8
+			add_finesse = 5
+			save_scope_as = marcus_crassus
+			set_variable = {
+				name = "marcus_crassus"
+			}
+			set_global_variable = {
+				name = "marcus_crassus"
+				value = this
+			}
+		}
+		scope:publius_crassus = {
+			adopt = scope:marcus_crassus
+		}
+	}
+}
+
+# Pinged event - checks if the triumvirate is alive, trigger event to give them prominence
+ruem_tmv1.14 = {
+	type = country_event
+	hidden = yes
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = ROM
+		is_republic = yes
+		country_culture = roman
+		religion = religion:roman_pantheon
+		AND = {
+			root.global_var:julius_caesar = {
+				is_alive = yes
+				age >= 30
+			}
+			root.global_var:pompei_magnus = {
+				is_alive = yes
+				age >= 36
+			}
+			root.global_var:marcus_crassus = {
+				is_alive = yes
+				age >= 42
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				AND = {
+					root.global_var:julius_caesar = {
+						is_alive = yes
+						has_any_office = yes
+						is_ruler = no
+					}
+					root.global_var:marcus_crassus = {
+						is_alive = yes
+						has_any_office = yes
+						is_ruler = no
+					}
+					root.global_var:pompei_magnus = {
+						is_alive = yes
+						has_any_office = yes
+						is_ruler = no
+					}
+				}
+			}
+			trigger_event = {
+				id = ruem_tmv1.1
+				days = { 0 365 }
+			}
+		}
+	}
+}
+
+# The first triumvirate rises to prominence, still not rulers
+ruem_tmv1.1 = {
+	type = country_event
+	title = ruem_tmv1.1.t
+	desc = ruem_tmv1.1.desc
+	picture = roman_trial
+
+	fire_only_once = yes
+
+	left_portrait = current_ruler
+	right_portrait = scope:marcus_crassus
+	right_portrait = scope:pompei_magnus
+	right_portrait = scope:julius_caesar
+
+	immediate = {
+		root.global_var:julius_caesar = {
+			save_scope_as = julius_caesar
+		}
+		root.global_var:marcus_crassus = {
+			save_scope_as = marcus_crassus
+		}
+		root.global_var:pompei_magnus = {
+			save_scope_as = pompei_magnus
+		}
+	}
+
+	option = {
+		name = ruem_tmv1.1.a
+		ai_chance = {
+			factor = 100
+		}
+		scope:julius_caesar = {
+			force_add_trait = prominent
+			force_add_trait = tactician
+			add_character_modifier = {
+				name = dhe_rome_populist_reform_cm
+				duration = -1
+			}
+		}
+		scope:marcus_crassus = {
+			force_add_trait = prominent
+			force_add_trait = generous
+		}
+		scope:pompei_magnus = {
+			force_add_trait = prominent
+			force_add_trait = tactician
+		}
+		hidden_effect = {
+			trigger_event = {
+				id = ruem_tmv1.15
+				years = { 5 10 }
+			}
+			scope:julius_caesar = {
+				add_popularity = 50
+			}
+			scope:marcus_crassus = {
+				add_popularity = 50
+			}
+			scope:pompei_magnus = {
+				add_popularity = 50
+			}
+		}
+	}
+
+	option = {
+		name = ruem_tmv1.1.b
+		add_tyranny = 15
+		scope:julius_caesar = {
+			death = {
+				death_reason = death_assassinated
+			}
+		}
+		scope:marcus_crassus = {
+			death = {
+				death_reason = death_assassinated
+			}
+		}
+		scope:pompei_magnus = {
+			death = {
+				death_reason = death_assassinated
+			}
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+# Pinged event. 10 years later, if still in office, make the triumvirate deal happen.
+ruem_tmv1.15 = {
+	type = country_event
+	hidden = yes
+
+	fire_only_once = yes
+
+	immediate = {
+		if = {
+			limit = {
+				AND = { 
+					root.global_var:julius_caesar = {
+						is_alive = yes
+						has_any_office = yes
+						popularity > 70
+					}
+					root.global_var:marcus_crassus = {
+						is_alive = yes
+						has_any_office = yes
+						popularity > 70
+					}
+					root.global_var:pompei_magnus = {
+						is_alive = yes
+						has_any_office = yes
+						popularity > 70
+					}
+				}
+			}
+			trigger_event = {
+				id = ruem_tmv1.16
+			}
+		}
+	}
+}
+
+# The Triumvirate deal
+# Pompei becomes ruler, caesar and crassus get offices. All get corruption and tyranny.
+ruem_tmv1.16 = {
+	type = country_event
+	title = ruem_tmv1.16.t
+	desc = ruem_tmv1.16.desc
+	picture = roman_trial
+
+	fire_only_once = yes
+
+	left_portrait = scope:pompei_magnus
+	left_portrait = scope:pompei_wife
+	right_portrait = scope:marcus_crassus
+	right_portrait = scope:julius_caesar
+
+	immediate = {
+		root.global_var:marcus_crassus = {
+			save_scope_as = marcus_crassus
+		}
+		root.global_var:julius_caesar = {
+			save_scope_as = julius_caesar
+		}
+		root.global_var:pompei_magnus = {
+			save_scope_as = pompei_magnus
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					scope:pompei_magnus = {
+						is_married = no
+					}
+				}
+				if = {
+					limit = {
+						scope:julius_caesar = {
+							any_child = {
+								is_female = yes
+								is_adult = yes
+								is_married = no
+							}
+						}
+					}
+					scope:julius_caesar = {
+						ordered_child = {
+							limit = {
+								is_female = yes
+								is_adult = yes
+								is_married = no
+							}
+							order_by = age
+							position = 0
+							save_scope_as = pompei_wife
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						scope:julius_caesar = {
+							any_family_member = {
+								is_female = yes
+								is_adult = yes
+								is_married = no
+							}
+						}
+					}
+					scope:julius_caesar = {
+						ordered_family_member = {
+							limit = {
+								is_female = yes
+								is_adult = yes
+								is_married = no
+								age < 25
+							}
+							order_by = age
+							position = 0
+							save_scope_as = pompei_wife
+						}
+					}
+				}
+				else = {
+					create_character = {
+						female = yes
+						family = fam:Julii
+						culture = roman
+						religion = religion:roman_pantheon
+						age = 16
+						father = scope:julius_caesar
+						save_scope_as = pompei_wife
+					}
+					scope:julius_caesar = {
+						adopt = scope:pompei_wife
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = ruem_tmv1.16.a
+		add_tyranny = 10
+		scope:pompei_magnus = {
+			add_corruption = 30
+		}
+		set_as_ruler = scope:pompei_magnus
+		scope:marcus_crassus = {
+			hidden_effect = {
+				remove_all_offices = yes
+				give_office = office_censor
+			}
+			add_corruption = 30
+		}
+		scope:julius_caesar = {
+			hidden_effect = {
+				remove_all_offices = yes
+				give_office = office_praetor
+			}
+			add_corruption = 30
+		}
+		if = {
+			limit = {
+				scope:pompei_magnus = {
+					is_married = no
+				}
+			}
+			scope:pompei_magnus = {
+				marry_character = scope:pompei_wife
+			}
+		}
+		add_country_modifier = {
+			name = first_triumvirate_modifier
+			duration = -1
+		}
+		hidden_effect = {
+			set_global_variable = {
+				name = "first_triumvirate"
+			}
+		}
+	}
+}
+
+# The Death of Marcus Crassus
+ruem_tmv1.17 = {
+	type = country_event
+
+	title = ruem_tmv1.17.t 
+	desc = ruem_tmv1.17.desc
+	picture = romans_marching
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = ROM
+		is_republic = yes
+		country_culture = roman
+		religion = religion:roman_pantheon
+		root.global_var:marcus_crassus = {
+			is_alive = no
+		}
+		has_global_variable = "first_triumvirate"
+	}
+
+	left_portrait = scope:marcus_crassus
+	right_portrait = scope:pompei_magnus
+	right_portrait = scope:julius_caesar
+
+	immediate = {
+		root.global_var:julius_caesar = {
+			save_scope_as = julius_caesar
+		}
+		root.global_var:pompei_magnus = {
+			save_scope_as = pompei_magnus
+		}
+		root.global_var:marcus_crassus = {
+			save_scope_as = marcus_crassus
+		}
+		remove_global_variable = "first_triumvirate"
+		set_global_variable = "caesar_cross_rubicon"
+	}
+
+	option = {
+		name = ruem_tmv1.17.a
+		set_as_ruler = scope:pompei_magnus
+		scope:julius_caesar = {
+			add_rival = scope:pompei_magnus
+			add_loyalty = -90
+		}
+		create_unit = {
+			commander = scope:julius_caesar
+			add_loyal_subunit = archers
+			add_loyal_subunit = archers
+			add_loyal_subunit = archers
+			add_loyal_subunit = archers
+			add_loyal_subunit = archers
+			add_loyal_subunit = light_infantry
+			add_loyal_subunit = light_infantry
+			add_loyal_subunit = light_infantry
+			add_loyal_subunit = light_infantry
+			add_loyal_subunit = heavy_infantry
+			add_loyal_subunit = heavy_infantry
+			add_loyal_subunit = heavy_infantry
+			add_loyal_subunit = heavy_infantry
+			add_loyal_subunit = heavy_infantry
+			add_loyal_subunit = light_cavalry
+			add_loyal_subunit = light_cavalry
+			add_loyal_subunit = heavy_cavalry
+			location = 3549
+			every_sub_unit = {
+				add_loyalty = 100
+			}
+		}
+		create_unit = {
+			commander = scope:pompei_magnus
+			add_loyal_subunit = archers
+			add_loyal_subunit = archers
+			add_loyal_subunit = archers
+			add_loyal_subunit = archers
+			add_loyal_subunit = archers
+			add_loyal_subunit = light_infantry
+			add_loyal_subunit = light_infantry
+			add_loyal_subunit = light_infantry
+			add_loyal_subunit = light_infantry
+			add_loyal_subunit = heavy_infantry
+			add_loyal_subunit = heavy_infantry
+			add_loyal_subunit = heavy_infantry
+			add_loyal_subunit = heavy_infantry
+			add_loyal_subunit = heavy_infantry
+			add_loyal_subunit = light_cavalry
+			add_loyal_subunit = light_cavalry
+			add_loyal_subunit = heavy_cavalry
+			location = capital_scope
+			every_sub_unit = {
+				add_loyalty = 100
+			}
+		}
+	}
+
+}
+
+ruem_tmv1.18 = {
+	type = country_event
+
+	hidden = yes
+
+	fire_only_once = yes
+
+	trigger = {
+		has_global_variable = "caesar_cross_rubicon"
+		tag = ROM
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_civil_war = yes	
+			}
+			remove_global_variable = "caesar_cross_rubicon"
+			trigger_event = {
+				id = ruem_tmv1.19
+				months = 1
+			}
+		}
+		if = {
+			limit = {
+				and = {
+					has_civil_war = no
+					root.global_var:julius_caesar = {
+						loyalty >= 40
+					}
+				}
+			}
+			remove_global_variable = "caesar_cross_rubicon"
+		}
+	}
+}
+
+ruem_tmv1.19 = {
+	type = country_event
+
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_civil_war = yes
+			}
+			trigger_event = {
+				id = ruem_tmv1.19
+				months = 1
+			}
+		}
+		if = {
+			limit = {
+				has_civil_war = no
+			}
+			trigger_event = {
+				id = ruem_tmv1.20
+				days = 0
+			}
+		}
+	}
+}
+
+ruem_tmv1.20 = {
+	type = country_event
+
+	title = ruem_tmv1.20.t
+	desc = ruem_tmv1.20.desc
+	picture = roman_trial
+
+	left_portrait = scope:julius_caesar
+
+	fire_only_once = yes
+
+	immediate = {
+		root.global_var:julius_caesar = {
+			save_scope_as = julius_caesar
+		}
+	}
+
+	option = {
+		name = ruem_tmv1.20.a
+	}
+
+}
