@@ -9,6 +9,6 @@
  ruem_tmv1.17.t:0 "The Death of [SCOPE.sChar('marcus_crassus').GetName]"
  ruem_tmv1.17.desc:0 "With the death of [SCOPE.sChar('marcus_crassus').GetName], the fragile alliance between [SCOPE.sChar('pompei_magnus').GetName] and [SCOPE.sChar('julius_caesar').GetName] is breaking. The two most powerful people in Rome are primed to go to war with each other. This war will determine the fate of the republic."
  ruem_tmv1.17.a:0 "The repulic is on the brink of collapse..."
- ruem_tmv1.20.t:0 "[SCOPE.sChar('julius_caesar').GetTitle]'s Triumph'"
+ ruem_tmv1.20.t:0 "[SCOPE.sChar('last_triumvi').GetTitle]'s Triumph'"
  ruem_tmv1.20.desc:0 ""
  ruem_tmv1.20.a:0 "He is a dictator now..."

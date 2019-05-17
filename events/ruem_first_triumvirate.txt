@@ -711,18 +711,44 @@ ruem_tmv1.20 = {
 	desc = ruem_tmv1.20.desc
 	picture = roman_trial
 
-	left_portrait = scope:julius_caesar
+	left_portrait = scope:last_triumvi
+	right_portrait = scope:loser_triumvi
 
 	fire_only_once = yes
 
 	immediate = {
-		root.global_var:julius_caesar = {
-			save_scope_as = julius_caesar
+		if = {
+			limit = {
+				root.global_var:julius_caesar = {
+					is_alive = yes
+				}
+			}
+			root.global_var:julius_caesar = {
+				save_scope_as = last_triumvi
+			}
+			root.global_var:pompei_magnus = {
+				save_scope_as = loser_triumvi
+			}
+		}
+		else_if = {
+			limit = {
+				root.global_var:pompei_magnus = {
+					is_alive = yes
+				}
+			 }
+			root.global_var:pompei_magnus = {
+				save_scope_as = last_triumvi
+			}
+			root.global_var:julius_caesar = {
+				save_scope_as = loser_triumvi
+			}
 		}
 	}
 
 	option = {
 		name = ruem_tmv1.20.a
+		change_government = dictatorship
+		set_as_ruler = scope:last_triumvi
 	}
 
 }
